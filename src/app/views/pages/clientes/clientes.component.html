@@ -1,21 +1,14 @@
-<nav class="page-breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a routerLink=".">CMV-CLIENTES</a></li>
-        <li class="breadcrumb-item active" aria-current="page">CLIENTES</li>
-    </ol>
-</nav>
-
-<div class="row">
+<div class="container-xxl">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Clientes</h4>
+                <h4 class="card-title text-center">Clientes de CMV</h4>
             </div>
         </div>
     </div>
 </div>
-<div class="row inbox-wrapper">
-    <div class="col-lg-12">
+<div class="container-fluid pt-5 my-8">
+    <div class="">
         <div class="card">
             <div class="card-body">
                 <div class="row justify-content-end mb-5">
@@ -23,22 +16,22 @@
                         <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
                     </div>
                 </div>
-                <div class="row">
-                    <h6 class="card-title">Usuarios</h6>
+                <div class="">
+                    <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
                         <ngx-datatable [scrollbarH]="true"  class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
                             <ngx-datatable-column name="Id" [maxWidth]="70" prop="id_cliente"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
                             <ngx-datatable-column name="Apellido Paterno" prop="apellido_paterno"></ngx-datatable-column>
                             <ngx-datatable-column name="Apellido Materno" prop="apellido_materno"></ngx-datatable-column>
-                            <ngx-datatable-column name="RFC" prop="rfc"></ngx-datatable-column>
-                            <ngx-datatable-column name="CURP" prop="curp"></ngx-datatable-column>
-                            <ngx-datatable-column name="Fecha de Alta" prop="fecha_alta">
+                            <ngx-datatable-column name="RFC" prop="rfc" [maxWidth]="130"></ngx-datatable-column>
+                            <ngx-datatable-column name="CURP" [maxWidth]="190" prop="curp"></ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha de Alta" [maxWidth]="200" prop="fecha_alta">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
-                                    {{value | date: 'MM/dd/yyyy'}}
+                                    {{value | date: 'dd/MM/yyyy HH:mm:ss'}}
                                 </ng-template>
                             </ngx-datatable-column>
-                            <ngx-datatable-column [minWidth]="200" name="Acciones">
+                            <ngx-datatable-column [minWidth]="320" name="Acciones">
                                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                                     <div style="display: flex; grid-gap: 10px; ">
                                         <button type="button" (click)="Cuentas_Modal(row.id_cliente)" class="btn btn-info ">Cuentas</button>
@@ -58,7 +51,7 @@
 <!-- MODAL ACTUALIZAR -->
 <ng-template #actualizarModal let-modal>
     <div class="modal-header ">
-        <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+        <h5 class="modal-title" id="exampleModalLabel ">Editar</h5>
         <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
                 <span aria-hidden="true ">&times;</span>
             </button>
