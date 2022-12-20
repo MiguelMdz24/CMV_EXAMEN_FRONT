@@ -46,6 +46,14 @@ export class ClienteService {
     )
   }
   public deleteclientes(cliente:any){
-    return cliente;
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        id_cliente: cliente.id_cliente
+      }
+    }
+    return this._httpClient.delete(`http://localhost:3018/clientes`, options)
   }
 }
