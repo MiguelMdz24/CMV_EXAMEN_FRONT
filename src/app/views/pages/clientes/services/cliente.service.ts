@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { retry, map } from 'rxjs/operators';
 import { ClientesModel } from '../../../../Models/cliente.model'
+import { Cliente_cuentaModel } from '../../../../Models/cliente_cuenta.model'
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,19 @@ export class ClienteService {
         let clientes: Array<ClientesModel> = new Array<ClientesModel>();
         data.forEach((element:any) => {
           clientes.push(new ClientesModel(element))
+        });
+        return clientes;
+      })
+    )
+  }
+  public getCliente_Cuentas(id_cliente:number){
+    return this._httpClient.post(`http://localhost:3018/cliente_cuenta`,{id_cliente: id_cliente})
+    .pipe(
+      retry(1),
+      map( (data: any) => {
+        let clientes: Array<Cliente_cuentaModel> = new Array<Cliente_cuentaModel>();
+        data.forEach((element:any) => {
+          clientes.push(new Cliente_cuentaModel(element))
         });
         return clientes;
       })

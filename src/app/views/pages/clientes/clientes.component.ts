@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ClienteService } from './services/cliente.service'
 import { ClientesModel } from './../../../Models/cliente.model';
+import { Cliente_cuentaModel } from './../../../Models/cliente_cuenta.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { ColumnMode } from '@swimlane/ngx-datatable';
@@ -17,10 +18,11 @@ import { ValidacionesCustom } from "../../../../assets/ValidacionesCustom"
   styleUrls: ['./clientes.component.scss']
 })
 export class ClientesComponent implements OnInit {
-  clientes: Array<object>= [];;
-  temp: Array<object>= [];;
+  clientes: Array<object>= [];
+  temp: Array<object>= [];
   eliminarCliente: FormGroup = new FormGroup({});
   actualizarCliente: FormGroup = new FormGroup({});
+  cliente_cuentas: Array<Cliente_cuentaModel>= [];
   /********PROPPIEDAD PARA LA TABLA******** */
   loadingIndicator = true;
   reorderable = true;
@@ -28,9 +30,10 @@ export class ClientesComponent implements OnInit {
   columns: Array<object> = [];
   @ViewChild('search', { static: false }) search: any;
   /************PROPIEDADES PARA EL MODAL**********/
-  @ViewChild('agregarModal') agregarModal: any;
   @ViewChild('actualizarModal') actualizarModal: any;
+  @ViewChild('cuentasModal') cuentasModal: any;
 
+  
   constructor(
     private _clientesService:ClienteService,
     private modalService:NgbModal,
@@ -141,8 +144,11 @@ export class ClientesComponent implements OnInit {
     })
   }
   public Cuentas_Modal(cliente:any): void {
-    this.actualizarCliente.patchValue(cliente);
-    this._currentModal = this.modalService.open(this.actualizarModal, {
+    this._clientesService.getCliente_Cuentas(cliente).subscribe((cuentas: Array<Cliente_cuentaModel>) => {
+      this.cliente_cuentas = cuentas;
+    })
+    console.log(this.cliente_cuentas)
+    this._currentModal = this.modalService.open(this.cuentasModal, {
       backdrop: 'static',
       keyboard: false,
       centered: true

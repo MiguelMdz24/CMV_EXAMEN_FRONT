@@ -41,7 +41,7 @@
                             <ngx-datatable-column [minWidth]="200" name="Acciones">
                                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                                     <div style="display: flex; grid-gap: 10px; ">
-                                        <button type="button" (click)="Cuentas_Modal(row)" class="btn btn-warning ">Cuentas</button>
+                                        <button type="button" (click)="Cuentas_Modal(row.id_cliente)" class="btn btn-info ">Cuentas</button>
                                         <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning ">Editar</button>
                                         <button type="button " (click)="eliminar_modal(row)" class="btn btn-danger ">Eliminar</button>
                                     </div>
@@ -97,6 +97,32 @@
                     <button type="submit" class="btn btn-primary" [disabled]="actualizarCliente.invalid">Continuar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</ng-template>
+
+<!-- MODAL CUENTAS -->
+<ng-template #cuentasModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Cuentas de {{cliente_cuentas[0].nombre}}</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+            <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <ol class="list-group list-group-numbered">
+            <div *ngFor="let cuenta of cliente_cuentas">
+                    <li class="list-group-item d-flex justify-content-between align-items-start">
+                      <div class="ms-2 me-auto">
+                        <div class="fw-bold">{{cuenta.nombre_cuenta}}</div>
+                            <p>Saldo: {{cuenta.saldo_actual | currency:'$' }} </p>
+                            <p>Fecha de  contratacion: {{cuenta.fecha_contratacion | date: 'dd/MM/yyyy HH:mm:ss'}} </p>
+                            <p>Fecha del ultimo movimiento: {{cuenta.fecha_ultimo_movimiento | date: 'dd/MM/yyyy HH:mm:ss'}} </p>
+                      </div>
+                    </li>
+                </div>
+            </ol>
         </div>
     </div>
 </ng-template>
