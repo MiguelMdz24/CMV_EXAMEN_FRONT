@@ -18,18 +18,20 @@ import { ValidacionesCustom } from "../../../../assets/ValidacionesCustom"
   styleUrls: ['./clientes.component.scss']
 })
 export class ClientesComponent implements OnInit {
+  /* Iniciando las variables necesarias */
   clientes: Array<object>= [];
   temp: Array<object>= [];
   eliminarCliente: FormGroup = new FormGroup({});
   actualizarCliente: FormGroup = new FormGroup({});
   cliente_cuentas: Array<Cliente_cuentaModel>= [];
-  /********PROPPIEDAD PARA LA TABLA******** */
+  /* Propiedades de la tabla */
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
   columns: Array<object> = [];
+  /* Referencia al buscador */
   @ViewChild('search', { static: false }) search: any;
-  /************PROPIEDADES PARA EL MODAL**********/
+  /* Referencias a los modales */
   @ViewChild('actualizarModal') actualizarModal: any;
   @ViewChild('cuentasModal') cuentasModal: any;
 
@@ -43,7 +45,7 @@ export class ClientesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.columns = [
+    this.columns = [ //las columnas de la tabla, para realizar la busqueda
       {name: "id", prop: "id_cliente"},
       {name: "Nombre", prop: "nombre"},
       {name: "Apellido Paterno", prop: "apellido_paterno"},
@@ -56,7 +58,7 @@ export class ClientesComponent implements OnInit {
     this.actualizarCliente = this.initForm();
     this.eliminarCliente = this.initForm();
   }
-  initForm(): FormGroup{
+  initForm(): FormGroup{ // Datos que tendra el form y sus validaciones
     return this.formBuilder.group({
       id_cliente: [""],
       nombre: ["", Validators.required],
@@ -67,16 +69,18 @@ export class ClientesComponent implements OnInit {
       fecha_alta: ["", ],
     })
   }
-
+  /* Metodo para obtener los clientes usando el servicio */
   public getclientes(){
     this._clientesService.getClientes().subscribe((clientes: Array<ClientesModel>) => {
       this.clientes = clientes;
       this.temp = clientes;
     })
   }
+  /* Metodo para cerrar el modal */
   private _cerrar(): void {
     this._currentModal.close();
   }
+  /* Metodo para abrir el modal de actualizar, recibe el cliente a editar */
   public Actualizar_Modal(cliente:any): void {
     this.actualizarCliente.patchValue(cliente);
     this._currentModal = this.modalService.open(this.actualizarModal, {
@@ -85,13 +89,15 @@ export class ClientesComponent implements OnInit {
       centered: true
     });
   }
+  /* Metodo para actualizar el cliente */
   public actualizar(): void {
+    //Poniendo el rfc y la curp en mayusculas
     this.actualizarCliente.value.rfc = this.actualizarCliente.value.rfc.toUpperCase();
     this.actualizarCliente.value.curp = this.actualizarCliente.value.curp.toUpperCase();
     this._clientesService.putClientes(this.actualizarCliente.value).pipe(
       take(1),
       map((dato:any) => {
-        if(dato.status == 200){
+        if(dato.status == 200){ //Mostrar alerta de exito
           Swal.fire({
             icon: 'success',
             title: 'Exito',
@@ -99,7 +105,7 @@ export class ClientesComponent implements OnInit {
           })
         }
         else {
-          Swal.fire({
+          Swal.fire({ //Mostrar alerta de error
             icon: 'error',
             title: 'Error',
             text: 'Error al editar cliente'
@@ -112,6 +118,7 @@ export class ClientesComponent implements OnInit {
     })
     this._cerrar();
   }
+  /* Modal/alerta de eliminar */
   public eliminar_modal(clientes:any): void {
     Swal.fire({
       title: 'Estas seguro de eliminar?',
@@ -119,8 +126,8 @@ export class ClientesComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Si',
       cancelButtonText: 'No'
-    }).then((result:any) => {
-      if (result.value) {
+    }).then((result:any) => { 
+      if (result.value) { //si la respuesta es si, procede a eliminar
         this.eliminarCliente.patchValue(clientes)
         this._clientesService.deleteclientes(this.eliminarCliente.value).
         pipe(
@@ -134,7 +141,7 @@ export class ClientesComponent implements OnInit {
             'success'
           )
         })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
+      } else if (result.dismiss === Swal.DismissReason.cancel) { //si la respuesta es no, muestra modal de cancelacion
         Swal.fire(
           'Cancelado',
           '',
@@ -143,19 +150,22 @@ export class ClientesComponent implements OnInit {
       }
     })
   }
+  /* Abrir modal de cuentas del cliente */
   public Cuentas_Modal(cliente:any): void {
+    //Obteniendo las cuentas desde el servicio, enviando el cliente
     this._clientesService.getCliente_Cuentas(cliente).subscribe((cuentas: Array<Cliente_cuentaModel>) => {
       this.cliente_cuentas = cuentas;
     })
-    console.log(this.cliente_cuentas)
+    //abriendo el modal
     this._currentModal = this.modalService.open(this.cuentasModal, {
       backdrop: 'static',
       keyboard: false,
       centered: true
     });
   }
-  /**********Busqueda************/
+  /* Metodo para realizar la busqueda en la tabla */
   ngAfterViewInit(): void {
+    //Si existe un evento de soltar tecla en el objeto search, extrear los valores y mandarlo al metodo updateFilter
     fromEvent(this.search.nativeElement, 'keydown')
       .pipe(
         debounceTime(550),
@@ -165,6 +175,7 @@ export class ClientesComponent implements OnInit {
         this.updateFilter(value);
       });
   }
+  /* Metodo para realizar el filtro de la palabra buscada (Se hace en todas las columnas) */
   updateFilter(val: any) {
     const value = val.toString().toLowerCase().trim();
     const count = this.columns.length;

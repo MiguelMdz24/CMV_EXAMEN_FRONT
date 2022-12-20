@@ -1,3 +1,4 @@
+// Interface para las cuentas del cliente
 export interface Cliente_cuenta{
     id_cliente_cuenta : number,
     nombre: String,
@@ -7,6 +8,7 @@ export interface Cliente_cuenta{
     fecha_ultimo_movimiento: Date
 }
 
+//Asignando los valores al modelo
 export class Cliente_cuentaModel implements Cliente_cuenta{
     id_cliente_cuenta : number;
     nombre: String;

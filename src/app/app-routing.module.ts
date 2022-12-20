@@ -5,10 +5,10 @@ import { ErrorPageComponent } from './views/pages/error-page/error-page.componen
 
 const routes: Routes = [
   {
-    path: '', loadChildren: () => import('./views/pages/clientes/clientes.module').then(m => m.ClientesModule)
+    path: '', loadChildren: () => import('./views/pages/clientes/clientes.module').then(m => m.ClientesModule) //pagina principal (clientes)
   },
   {
-    path: '**', component: ErrorPageComponent,
+    path: '**', component: ErrorPageComponent, //cualquier otro path, mandar a la pagina de error
   }
 ];
 

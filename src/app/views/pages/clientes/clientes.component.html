@@ -1,3 +1,4 @@
+<!--Encabezado-->
 <div class="container-xxl">
     <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
@@ -7,16 +8,19 @@
         </div>
     </div>
 </div>
+<!--Tabla y buscador-->
 <div class="container-fluid pt-5 my-8">
     <div class="">
         <div class="card">
             <div class="card-body">
                 <div class="row justify-content-end mb-5">
+                    <!--Buscador-->
                     <div class="col-lg-3">
                         <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
                     </div>
                 </div>
                 <div class="">
+                    <!--Tabla-->
                     <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
                         <ngx-datatable [scrollbarH]="true"  class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
@@ -28,7 +32,7 @@
                             <ngx-datatable-column name="CURP" [maxWidth]="190" prop="curp"></ngx-datatable-column>
                             <ngx-datatable-column name="Fecha de Alta" [maxWidth]="200" prop="fecha_alta">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
-                                    {{value | date: 'dd/MM/yyyy HH:mm:ss'}}
+                                    {{value | date: 'dd/MM/yyyy HH:mm:ss'}}  <!--Dando formato a la fecha-->
                                 </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column [minWidth]="320" name="Acciones">

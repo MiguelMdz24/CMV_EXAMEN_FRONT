@@ -1,3 +1,4 @@
+// Interface para el cliente
 export interface Clientes {
     id_cliente: Number,
     nombre: String,
@@ -7,7 +8,7 @@ export interface Clientes {
     curp: String,
     fecha_alta: Date
 }
-
+//Asignando los valores al modelo
 export class ClientesModel implements Clientes{
     id_cliente: Number;
     nombre: String;
