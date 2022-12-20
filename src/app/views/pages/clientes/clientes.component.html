@@ -1,1 +1,102 @@
-<p>clientes works!</p>
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">CMV-CLIENTES</a></li>
+        <li class="breadcrumb-item active" aria-current="page">CLIENTES</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Clientes</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row inbox-wrapper">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row justify-content-end mb-5">
+                    <div class="col-lg-3">
+                        <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
+                    </div>
+                </div>
+                <div class="row">
+                    <h6 class="card-title">Usuarios</h6>
+                    <div class="table-responsive">
+                        <ngx-datatable [scrollbarH]="true"  class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                            <ngx-datatable-column name="Id" [maxWidth]="70" prop="id_cliente"></ngx-datatable-column>
+                            <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
+                            <ngx-datatable-column name="Apellido Paterno" prop="apellido_paterno"></ngx-datatable-column>
+                            <ngx-datatable-column name="Apellido Materno" prop="apellido_materno"></ngx-datatable-column>
+                            <ngx-datatable-column name="RFC" prop="rfc"></ngx-datatable-column>
+                            <ngx-datatable-column name="CURP" prop="curp"></ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha de Alta" prop="fecha_alta">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value | date: 'MM/dd/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [minWidth]="200" name="Acciones">
+                                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    <div style="display: flex; grid-gap: 10px; ">
+                                        <button type="button" (click)="Cuentas_Modal(row)" class="btn btn-warning ">Cuentas</button>
+                                        <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning ">Editar</button>
+                                        <button type="button " (click)="eliminar_modal(row)" class="btn btn-danger ">Eliminar</button>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+                <span aria-hidden="true ">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="actualizarCliente" (ngSubmit)="actualizar()">
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input type="text" formControlName="nombre" class="form-control" required>
+                    <p class="text-danger mt-1" *ngIf="actualizarCliente.get('nombre')?.errors">Requerido</p>
+                </div>
+                <div class="form-group">
+                    <label>Apellido Paterno</label>
+                    <input type="text" formControlName="apellido_paterno" class="form-control" required>
+                    <p class="text-danger mt-1" *ngIf="actualizarCliente.get('apellido_paterno')?.errors">Requerido</p>
+                </div>
+            
+                <div class="form-group">
+                    <label>Apellido Materno</label>
+                    <input type="text" formControlName="apellido_materno" class="form-control" required placeholder="ejemplo@ejemplo.com">
+                    <p class="text-danger mt-1" *ngIf="actualizarCliente.get('apellido_materno')?.errors">Requerido</p>
+                </div>
+                <div class="form-group">
+                    <label>RFC (homoclave opcional)</label>
+                    <input type="text" formControlName="rfc" class="form-control" required>
+                    <p class="text-danger mt-1" *ngIf="actualizarCliente.get('rfc')?.errors">Requerido o el formato esta mal</p>
+                </div>
+                <div class="form-group">
+                    <label>CURP</label>
+                    <input type="text" formControlName="curp" class="form-control" required>
+                    <p class="text-danger mt-1" *ngIf="actualizarCliente.get('curp')?.errors">Requerido o el formato esta mal</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarCliente.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
